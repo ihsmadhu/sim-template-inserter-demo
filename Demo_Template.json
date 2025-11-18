@@ -1,0 +1,59 @@
+[
+  {
+    "process": "RFQ",
+    "category": "Invitations",
+    "name": "RFQ Invitation - Initial",
+    "body": "Hello [Supplier Name],\n\nWe would like to invite you to participate in the RFQ for [Project Name]. Please review the documents and confirm your intent to bid.\n\nRegards,\n[Your Name]",
+    "starred": true
+  },
+  {
+    "process": "RFQ",
+    "category": "Follow-ups",
+    "name": "Intent to Bid - Reminder",
+    "body": "Hello [Supplier Name],\n\nThis is a gentle reminder to share your Intent to Bid for the RFQ [RFQ Number]. Kindly confirm your interest so we can proceed with the next steps.\n\nThank you,\n[Your Name]",
+    "starred": false
+  },
+  {
+    "process": "RFQ",
+    "category": "Follow-ups",
+    "name": "Bid Submission Reminder",
+    "body": "Hello [Supplier Name],\n\nFriendly reminder that the bid submission for [Project Name] is due on [Bid Due Date]. Please ensure your documents are uploaded before the deadline.\n\nRegards,\n[Your Name]",
+    "starred": true
+  },
+  {
+    "process": "Onboarding",
+    "category": "Document Requests",
+    "name": "Missing Documents Request",
+    "body": "Hello [Supplier Name],\n\nWe noticed that the following documents are pending:\n- [Document 1]\n- [Document 2]\n\nKindly share the required files to avoid delays.\n\nThanks,\n[Your Name]",
+    "starred": false
+  },
+  {
+    "process": "Onboarding",
+    "category": "Clarifications",
+    "name": "Additional Information Needed",
+    "body": "Hello [Supplier Name],\n\nWe require additional information regarding [Topic]. Please provide details so we can continue the onboarding process.\n\nThanks,\n[Your Name]",
+    "starred": false
+  },
+  {
+    "process": "General",
+    "category": "Internal",
+    "name": "Internal Update to Requestor",
+    "body": "Hi [Requester Name],\n\nWe have reached out to the supplier regarding [Topic]. We will update you once we receive a response.\n\nRegards,\n[Your Name]",
+    "starred": false
+  },
+  {
+    "process": "General",
+    "category": "Internal",
+    "name": "Case Update - Waiting on Vendor",
+    "body": "Hi [Requester Name],\n\nWe are currently awaiting a response from the supplier. We will follow up again if there is no update.\n\nRegards,\n[Your Name]",
+    "starred": false
+  },
+  {
+    "process": "General",
+    "category": "Internal",
+    "name": "Issue Resolved - Closure Note",
+    "body": "Hi [Requester Name],\n\nThe issue has been resolved and the necessary actions are complete. Please review and let us know if any further support is needed.\n\nRegards,\n[Your Name]",
+    "starred": false
+  }
+]
+

@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>DigiFlex Comment Hub – SIM-Style Issue Demo</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+    body {
+      background: #f3f4f6;
+      color: #111827;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    .topbar {
+      height: 48px;
+      background: #232f3e;
+      color: #f9fafb;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 14px;
+      font-size: 13px;
+    }
+    .topbar-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .topbar-title {
+      font-weight: 600;
+    }
+    .topbar-env {
+      font-size: 11px;
+      padding: 1px 6px;
+      border-radius: 999px;
+      border: 1px solid #6b7280;
+      color: #e5e7eb;
+    }
+    .topbar-right {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .topbar-link {
+      cursor: pointer;
+      opacity: 0.9;
+    }
+    .topbar-link:hover {
+      opacity: 1;
+      text-decoration: underline;
+    }
+    .avatar {
+      width: 24px;
+      height: 24px;
+      border-radius: 999px;
+      background: #4b5563;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+    }
+    .layout {
+      display: grid;
+      grid-template-columns: 240px minmax(0, 1fr);
+      flex: 1;
+      min-height: calc(100vh - 48px);
+    }
+    .sidebar {
+      background: #111827;
+      color: #e5e7eb;
+      font-size: 12px;
+      padding: 10px 10px 12px;
+      border-right: 1px solid #030712;
+    }
+    .sidebar-header {
+      font-size: 12px;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+    .filter-group {
+      margin-bottom: 10px;
+    }
+    .filter-title {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #9ca3af;
+      margin-bottom: 4px;
+    }
+    .filter-item {
+      padding: 4px 6px;
+      border-radius: 4px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      color: #e5e7eb;
+    }
+    .filter-item:hover {
+      background: #1f2937;
+    }
+    .filter-item.active {
+      background: #fbbf24;
+      color: #111827;
+      font-weight: 600;
+    }
+    .filter-count {
+      font-size: 10px;
+      background: #374151;
+      border-radius: 999px;
+      padding: 0 6px;
+    }
+    .content {
+      display: flex;
+      flex-direction: column;
+      padding: 10px 14px;
+      gap: 8px;
+    }
+    .breadcrumbs {
+      font-size: 11px;
+      color: #6b7280;
+    }
+    .breadcrumbs span + span::before {
+      content: "›";
+      padding: 0 4px;
+      color: #9ca3af;
+    }
+    .issue-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      border-bottom: 1px solid #e5e7eb;
+      padding-bottom: 6px;
+    }
+    .issue-title-block {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .issue-key-line {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 14px;
+      font-weight: 600;
+    }
+    .issue-summary {
+      font-size: 13px;
+      color: #374151;
+    }
+    .status-pill {
+      font-size: 11px;
+      padding: 2px 8px;
+      border-radius: 999px;
+      background: #ecfdf3;
+      color: #166534;
+      border: 1px solid #bbf7d0;
+    }
+    .issue-actions {
+      display: flex;
+      gap: 6px;
+    }
+    .btn {
+      border-radius: 4px;
+      border: 1px solid #d1d5db;
+      padding: 3px 8px;
+      font-size: 11px;
+      background: #f9fafb;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .btn-primary {
+      background: #fbbf24;
+      color: #111827;
+      border-color: #f59e0b;
+      font-weight: 600;
+    }
+    .btn:hover {
+      background: #f3f4f6;
+    }
+    .main-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+      gap: 10px;
+      margin-top: 6px;
+      align-items: flex-start;
+    }
+    .panel {
+      background: #ffffff;
+      border-radius: 6px;
+      border: 1px solid #e5e7eb;
+      box-shadow: 0 1px 2px rgba(0,0,0,.04);
+      padding: 8px 10px;
+      font-size: 12px;
+    }
+    .panel-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 6px;
+    }
+    .panel-title {
+      font-weight: 600;
+      font-size: 12px;
+    }
+    .panel-subtitle {
+      font-size: 11px;
+      color: #6b7280;
+      margin-top: 2px;
+    }
+    .field-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 8px;
+      margin-bottom: 6px;
+    }
+    .field {
+      font-size: 11px;
+    }
+    .field-label {
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #9ca3af;
+      margin-bottom: 2px;
+      font-size: 10px;
+    }
+    .field-value {
+      font-weight: 500;
+      color: #374151;
+    }
+    .description-block {
+      margin-top: 4px;
+    }
+    .description-title {
+      font-size: 11px;
+      font-weight: 600;
+      margin-bottom: 2px;
+    }
+    .description-body {
+      font-size: 11px;
+      color: #4b5563;
+      background: #f9fafb;
+      border-radius: 4px;
+      padding: 6px;
+      border: 1px dashed #e5e7eb;
+    }
+    .detail-list {
+      font-size: 11px;
+      margin-top: 4px;
+    }
+    .detail-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 2px 0;
+    }
+    .detail-label {
+      color: #6b7280;
+    }
+    .detail-value {
+      color: #111827;
+    }
+    .comment-section-title {
+      font-size: 12px;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+    .comment-help {
+      font-size: 11px;
+      color: #6b7280;
+      margin-bottom: 4px;
+    }
+    textarea,
+    [contenteditable="true"] {
+      width: 100%;
+      min-height: 160px;
+      resize: vertical;
+      padding: 6px 8px;
+      font-size: 12px;
+      border-radius: 4px;
+      border: 1px solid #d1d5db;
+      background: #f9fafb;
+      outline: none;
+      line-height: 1.5;
+    }
+    textarea:focus,
+    [contenteditable="true"]:focus {
+      border-color: #2563eb;
+      box-shadow: 0 0 0 1px rgba(37,99,235,.3);
+      background: #ffffff;
+    }
+    .comment-footer {
+      margin-top: 4px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 10px;
+      color: #6b7280;
+    }
+    .hint-key {
+      border-radius: 3px;
+      border: 1px solid #d1d5db;
+      padding: 0 4px;
+      font-size: 10px;
+      background: #f9fafb;
+    }
+    .timeline {
+      font-size: 11px;
+      margin-top: 4px;
+    }
+    .timeline-item {
+      padding: 4px 0;
+      border-bottom: 1px solid #e5e7eb;
+      display: flex;
+      gap: 6px;
+    }
+    .timeline-item:last-child {
+      border-bottom: none;
+    }
+    .timeline-dot {
+      width: 14px;
+      height: 14px;
+      border-radius: 999px;
+      background: #e5e7eb;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 9px;
+    }
+    .timeline-main {
+      flex: 1;
+    }
+    .timeline-title {
+      font-weight: 500;
+    }
+    .timeline-meta {
+      color: #6b7280;
+      margin-top: 1px;
+    }
+    .footer {
+      font-size: 10px;
+      text-align: center;
+      color: #9ca3af;
+      padding: 6px 0 8px;
+      border-top: 1px solid #e5e7eb;
+      background: #f9fafb;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="topbar">
+    <div class="topbar-left">
+      <div class="topbar-title">Issue Manager</div>
+      <div class="topbar-env">prod</div>
+    </div>
+    <div class="topbar-right">
+      <div class="topbar-link">Help</div>
+      <div class="topbar-link">Shortcuts</div>
+      <div class="avatar">MS</div>
+    </div>
+  </div>
+
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="sidebar-header">Filters</div>
+
+      <div class="filter-group">
+        <div class="filter-title">Queues</div>
+        <div class="filter-item active">
+          <span>My queue</span>
+          <span class="filter-count">7</span>
+        </div>
+        <div class="filter-item">
+          <span>Team queue</span>
+          <span class="filter-count">23</span>
+        </div>
+        <div class="filter-item">
+          <span>All issues</span>
+          <span class="filter-count">124</span>
+        </div>
+      </div>
+
+      <div class="filter-group">
+        <div class="filter-title">Status</div>
+        <div class="filter-item">
+          <span>New</span>
+          <span class="filter-count">4</span>
+        </div>
+        <div class="filter-item">
+          <span>In progress</span>
+          <span class="filter-count">9</span>
+        </div>
+        <div class="filter-item">
+          <span>Waiting on requester</span>
+          <span class="filter-count">3</span>
+        </div>
+        <div class="filter-item">
+          <span>Resolved</span>
+          <span class="filter-count">88</span>
+        </div>
+      </div>
+
+      <div class="filter-group">
+        <div class="filter-title">Type</div>
+        <div class="filter-item">
+          <span>RFQ</span>
+        </div>
+        <div class="filter-item">
+          <span>Onboarding</span>
+        </div>
+        <div class="filter-item">
+          <span>Invoice</span>
+        </div>
+      </div>
+    </aside>
+
+    <main class="content">
+      <div class="breadcrumbs">
+        <span>My queue</span>
+        <span>Issue</span>
+        <span>Vendor communication</span>
+      </div>
+
+      <header class="issue-header">
+        <div class="issue-title-block">
+          <div class="issue-key-line">
+            <span>IM-2025-01987</span>
+            <span class="status-pill">In progress</span>
+          </div>
+          <div class="issue-summary">Request for updated quotation and intent to bid confirmation</div>
+        </div>
+        <div class="issue-actions">
+          <button class="btn">⟳ Refresh</button>
+          <button class="btn-primary">✔ Add Comment</button>
+        </div>
+      </header>
+
+      <div class="main-grid">
+        <section class="panel">
+          <header class="panel-header">
+            <div>
+              <div class="panel-title">Issue Details</div>
+              <div class="panel-subtitle">High-level information used by templates.</div>
+            </div>
+          </header>
+
+          <div class="field-grid">
+            <div class="field">
+              <div class="field-label">Requestor</div>
+              <div class="field-value">ops-user@demo.test</div>
+            </div>
+            <div class="field">
+              <div class="field-label">Region</div>
+              <div class="field-value">APAC</div>
+            </div>
+            <div class="field">
+              <div class="field-label">Created</div>
+              <div class="field-value">14 Nov 2025 • 09:32</div>
+            </div>
+          </div>
+
+          <div class="field-grid">
+            <div class="field">
+              <div class="field-label">Process</div>
+              <div class="field-value">RFQ</div>
+            </div>
+            <div class="field">
+              <div class="field-label">Priority</div>
+              <div class="field-value">P2 – Standard</div>
+            </div>
+            <div class="field">
+              <div class="field-label">Due date</div>
+              <div class="field-value">18 Nov 2025</div>
+            </div>
+          </div>
+
+          <div class="description-block">
+            <div class="description-title">Summary</div>
+            <div class="description-body">
+              Buyer has initiated RFQ for facilities services. Supplier has not submitted intent to bid; follow-up communication is required to confirm interest and share submission timeline.
+            </div>
+          </div>
+        </section>
+
+        <section class="panel">
+          <header class="panel-header">
+            <div>
+              <div class="panel-title">History</div>
+              <div class="panel-subtitle">Recent state changes and comments.</div>
+            </div>
+          </header>
+
+          <div class="timeline">
+            <div class="timeline-item">
+              <div class="timeline-dot">✉</div>
+              <div class="timeline-main">
+                <div class="timeline-title">Initial RFQ email sent</div>
+                <div class="timeline-meta">14 Nov 2025 • System • Using standard invitation template</div>
+              </div>
+            </div>
+            <div class="timeline-item">
+              <div class="timeline-dot">⧗</div>
+              <div class="timeline-main">
+                <div class="timeline-title">No response detected</div>
+                <div class="timeline-meta">16 Nov 2025 • Checkpoint • Intent to bid still pending</div>
+              </div>
+            </div>
+            <div class="timeline-item">
+              <div class="timeline-dot">👤</div>
+              <div class="timeline-main">
+                <div class="timeline-title">Owner assigned</div>
+                <div class="timeline-meta">15 Nov 2025 • Assigned to: Madhumitha S</div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <section class="panel">
+        <header class="panel-header">
+          <div>
+            <div class="comment-section-title">Comment</div>
+            <div class="comment-help">
+              Click in the box below, then use your DigiFlex Comment Hub sidebar to insert a template and customize it.
+            </div>
+          </div>
+        </header>
+
+        <!-- This is the SIM-style comment box your userscript should target -->
+        <textarea id="issue-comment" placeholder="Add a comment for the requester, vendor, or internal teams..."></textarea>
+
+        <div class="comment-footer">
+          <span>
+            Hint: Your templates can use <span class="hint-key">[placeholders]</span> such as <code>[Supplier Name]</code> or <code>[Bid Due Date]</code>.
+          </span>
+          <span>Demo only • No live system</span>
+        </div>
+      </section>
+
+      <div class="footer">
+        DigiFlex Comment Hub Demo • SIM-style issue view for showcasing template insertion and comment automation.
+      </div>
+    </main>
+  </div>
+
+</body>
+</html>
